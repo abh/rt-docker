@@ -1,0 +1,23 @@
+--- rt-4.4.2/sbin/rt-test-dependencies.in~
++++ rt-4.4.2/sbin/rt-test-dependencies.in
+@@ -199,12 +199,10 @@
+ set_dep( CORE => CGI => 4.00 ) if $] > 5.019003;
+ 
+ $deps{'MAILGATE'} = [ text_to_hash( << '.') ];
+-Crypt::SSLeay
+ Getopt::Long
+ LWP::Protocol::https
+ LWP::UserAgent 6.0
+ Mozilla::CA
+-Net::SSL
+ Pod::Usage
+ .
+ 
+@@ -293,7 +291,6 @@
+ .
+ 
+ $deps{'EXTERNALAUTH'} = [ text_to_hash( <<'.') ];
+-Net::SSLeay
+ Net::LDAP
+ .
+ 
