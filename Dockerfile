@@ -72,3 +72,7 @@ RUN cpanm RT::Authen::Token RT::Extension::MergeUsers && rm -fr ~/.cpanm
 RUN cpanm -f RT::Extension::REST2 && rm -fr ~/.cpanm
 
 WORKDIR /opt/rt
+
+ADD run /opt/rt/
+
+CMD /opt/rt/run
