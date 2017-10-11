@@ -4,7 +4,7 @@ ENV RTVERSION 4.4.2
 
 RUN addgroup rt && adduser -D -G rt rt
 
-RUN apk update; apk add gnupg emacs-nox
+RUN apk update; apk add gnupg emacs-nox gd-dev graphviz perl-graphviz perl-gd
 
 # get some dependencies in the image and cached
 RUN cpanm HTML::Mason Moose Locale::Maketext::Fuzzy DBIx::SearchBuilder HTML::Formatter \
@@ -23,6 +23,8 @@ RUN cpanm HTML::Mason Moose Locale::Maketext::Fuzzy DBIx::SearchBuilder HTML::Fo
 
 # modules with problems installing
 RUN cpanm HTML::FormatText::WithLinks::AndTables HTML::FormatText::WithLinks && rm -fr ~/.cpanm 
+
+RUN cpanm GraphViz GD && rm -fr ~/.cpanm
 
 # test fails on Alpine, ignore them...
 RUN cpanm -n PerlIO::eol && rm -fr ~/.cpanm
