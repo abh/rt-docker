@@ -4,7 +4,9 @@ ENV RTVERSION 4.4.2
 
 RUN addgroup rt && adduser -D -G rt rt
 
-RUN apk update; apk add gnupg emacs-nox gd-dev graphviz perl-graphviz perl-gd
+RUN apk --no-cache upgrade; apk add --no-cache gnupg emacs-nox \
+   gd-dev graphviz perl-graphviz perl-gd \
+   ssmtp
 
 # get some dependencies in the image and cached
 RUN cpanm HTML::Mason Moose Locale::Maketext::Fuzzy DBIx::SearchBuilder HTML::Formatter \
@@ -70,6 +72,8 @@ RUN cpanm RT::Authen::Token RT::Extension::MergeUsers && rm -fr ~/.cpanm
 
 # tests fail if a valid database hasn't been setup
 RUN cpanm -f RT::Extension::REST2 && rm -fr ~/.cpanm
+
+RUN perl -i -pe 's{^mailhub=.*}{mailhub=smtp}' /etc/ssmtp/ssmtp.conf
 
 WORKDIR /opt/rt
 
