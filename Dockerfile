@@ -6,7 +6,7 @@ RUN addgroup rt && adduser -D -G rt rt
 
 RUN apk --no-cache upgrade; apk add --no-cache gnupg emacs-nox \
    gd-dev graphviz perl-graphviz perl-gd \
-   ssmtp
+   mini-sendmail
 
 # get some dependencies in the image and cached
 RUN cpanm HTML::Mason Moose Locale::Maketext::Fuzzy DBIx::SearchBuilder HTML::Formatter \
@@ -73,9 +73,11 @@ RUN cpanm RT::Authen::Token RT::Extension::MergeUsers && rm -fr ~/.cpanm
 # tests fail if a valid database hasn't been setup
 RUN cpanm -f RT::Extension::REST2 && rm -fr ~/.cpanm
 
-RUN perl -i -pe 's{^mailhub=.*}{mailhub=smtp}' /etc/ssmtp/ssmtp.conf
-
 WORKDIR /opt/rt
+
+# use mini-sendmail instead of busybox sendmail, commented out
+# because the busybox sendmail seems to work.
+# RUN ln -sf /var/lib/mini-sendmail/mini_sendmail /usr/sbin/sendmail
 
 ADD run /opt/rt/
 
