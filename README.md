@@ -5,6 +5,11 @@ run under Kubernetes, though it should work fine under "just docker", too.
 
 It includes RT::Extension::REST2, RT::Authen::Token and RT::Extension::MergeUsers.
 
+A prebuild version is available on [quay.io/abh/rt](https://quay.io/abh/rt/).
+
+    docker pull quay.io/abh/rt:latest
+
+
 ## How to configure RT
 
 Make a volume mounted into `/opt/rt/etc/RT_SiteConfig.d/` with one or more
