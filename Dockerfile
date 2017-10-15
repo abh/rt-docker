@@ -81,4 +81,6 @@ WORKDIR /opt/rt
 
 ADD run /opt/rt/
 
+EXPOSE 8000
+
 CMD /opt/rt/run

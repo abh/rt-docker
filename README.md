@@ -13,7 +13,25 @@ A prebuild version is available on [quay.io/abh/rt](https://quay.io/abh/rt/).
 ## How to configure RT
 
 Make a volume mounted into `/opt/rt/etc/RT_SiteConfig.d/` with one or more
-configuration files (file extension `.pm`).
+[configuration files](https://docs.bestpractical.com/rt/4.4.2/RT_Config.html)
+(file extension `.pm`).
+
+## How to run
+
+To test under docker, something like
+
+    mkdir RT_SiteConfig.d
+    vi RT_SiteConfig.d/myrt.pm
+    docker run -i --rm \
+        -v `pwd`/RT_SiteConfig.d:/opt/rt/etc/RT_SiteConfig.d/ \
+        -p 8000:8000 \
+        quay.io/abh/rt:latest
+
+Then access the RT installation on port 8000.
+
+For development you might want to leave out `--rm`. I like including
+it to not have a bunch of "dead" containers around and to discourage
+editing anything in a non-reproducible way.
 
 ## How to configure incoming mail
 
