@@ -1,0 +1,59 @@
+diff --git a/lib/RT/Interface/Email.pm b/lib/RT/Interface/Email.pm
+index 1ef2ca771..3483cee96 100644
+--- a/lib/RT/Interface/Email.pm
++++ b/lib/RT/Interface/Email.pm
+@@ -63,6 +63,8 @@ use RT::Util 'safe_run_child';
+ use File::Spec;
+ use MIME::Words ();
+ use Scope::Upper qw/unwind HERE/;
++use Email::Sender::Simple ();
++use Email::Sender::Transport::SMTP ();
+ use 5.010;
+ 
+ =head1 NAME
+@@ -976,6 +978,45 @@ sub SendEmail {
+         print $fh "From $user\@localhost  ".localtime()."\n";
+         print $fh $content, "\n";
+         close $fh;
++    } elsif ( $mail_command eq 'smtp' ) {
++
++        # TODO: if args{Bounce} ?
++
++        # SetOutgoingMailFrom is required for SMTP
++        my $sender = _OutgoingMailFrom($TicketObj);
++
++        # VERP
++        if (    $TransactionObj
++            and my $prefix = RT->Config->Get('VERPPrefix')
++            and my $domain = RT->Config->Get('VERPDomain'))
++        {
++            my $from = $TransactionObj->CreatorObj->EmailAddress;
++            $from =~ s/@/=/g;
++            $from =~ s/\s//g;
++            $sender = "$prefix$from\@$domain";
++        }
++
++        eval {
++            Email::Sender::Simple::sendmail(
++                $args{Entity},
++                {   from      => $sender,
++                    transport => Email::Sender::Transport::SMTP->new(
++                        {   host => 'localhost',
++                            port => 25,
++                        }
++                    )
++                }
++            );
++        };
++
++        if ($@) {
++            $RT::Logger->crit("$msgid: Could not send mail with smtp: " . $@);
++            if ($TicketObj) {
++                _RecordSendEmailFailure($TicketObj);
++            }
++            return 0;
++        }
++
+     } else {
+         local ($ENV{'MAILADDRESS'}, $ENV{'PERL_MAILERS'});
+ 

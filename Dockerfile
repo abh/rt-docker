@@ -40,6 +40,9 @@ RUN cpanm -f GnuPG::Interface && rm -fr ~/.cpanm
 RUN cpanm Path::Dispatcher MooseX::Role::Parameterized Web::Machine Module::Path Pod::POM && rm -fr ~/.cpanm
 RUN cpanm -f Test::WWW::Mechanize::PSGI && rm -fr ~/.cpanm
 
+# SMTP test
+RUN cpanm Email::Sender::Simple Email::Sender::Transport::SMTP
+
 # autoconfigure cpan shell for RT installer
 RUN cpan < /dev/null
 RUN cpan CPAN
@@ -49,8 +52,9 @@ RUN curl -Ls https://download.bestpractical.com/pub/rt/release/rt-$RTVERSION.tar
 
 WORKDIR /usr/src/rt-$RTVERSION
 
-ADD net-ssl.patch /tmp/
+ADD net-ssl.patch smtp.patch /tmp/
 RUN patch -p1 < /tmp/net-ssl.patch && rm /tmp/net-ssl.patch
+RUN patch -p1 < /tmp/smtp.patch && rm /tmp/smtp.patch
 
 RUN ./configure \
    --prefix=/opt/rt \
