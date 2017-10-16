@@ -9,7 +9,6 @@ A prebuild version is available on [quay.io/abh/rt](https://quay.io/abh/rt/).
 
     docker pull quay.io/abh/rt:latest
 
-
 ## How to configure RT
 
 Make a volume mounted into `/opt/rt/etc/RT_SiteConfig.d/` with one or more
@@ -55,6 +54,14 @@ you can run a second container in the pod listening on port 25. I use
 relaying to a "real" mailhost. It's easy to configure it to use gmail
 or Amazon SES. I again use SparkPost as a "generic SMTP relay", any
 SMTP service should work.
+
+RT really wants to use a program to send mail. The busybox `sendmail`
+regularly (but not always?) quit with some error or didn't like the
+parameters RT provided. mini-sendmail requires the `-f` parameter and
+the sender address to not have a space between them.
+
+Instead I patched RT to allow sending mail via SMTP. Use 'smtp' as
+the configured MailCommand.
 
 ## How to make a custom build
 
