@@ -26,14 +26,19 @@ RUN cpanm HTML::Mason Moose Locale::Maketext::Fuzzy DBIx::SearchBuilder HTML::Fo
 # modules with problems installing
 RUN cpanm HTML::FormatText::WithLinks::AndTables HTML::FormatText::WithLinks && rm -fr ~/.cpanm 
 
-RUN cpanm GraphViz GD && rm -fr ~/.cpanm
+RUN cpanm GraphViz GD GD::Graph GD::Text && rm -fr ~/.cpanm
 
 # test fails on Alpine, ignore them...
 RUN cpanm -n PerlIO::eol && rm -fr ~/.cpanm
 
 # for GnuPG::Interface
 RUN cpanm MooX::late MooX::HandlesVia && rm -fr ~/.cpanm
+# Doesn't pass tests without a tty?
 RUN cpanm -f GnuPG::Interface && rm -fr ~/.cpanm
+
+# For RT::Extension::REST2
+RUN cpanm Path::Dispatcher MooseX::Role::Parameterized Web::Machine Module::Path Pod::POM && rm -fr ~/.cpanm
+RUN cpanm -f Test::WWW::Mechanize::PSGI && rm -fr ~/.cpanm
 
 # autoconfigure cpan shell for RT installer
 RUN cpan < /dev/null
@@ -63,10 +68,6 @@ RUN make testdeps
 RUN make install
 
 ENV PERL5LIB=/opt/rt/lib
-
-# For RT::Extension::REST2
-RUN cpanm Path::Dispatcher MooseX::Role::Parameterized Web::Machine Module::Path Pod::POM && rm -fr ~/.cpanm
-RUN cpanm -f Test::WWW::Mechanize::PSGI && rm -fr ~/.cpanm
 
 RUN cpanm RT::Authen::Token RT::Extension::MergeUsers && rm -fr ~/.cpanm
 
