@@ -6,7 +6,7 @@ RUN addgroup rt && adduser -D -G rt rt
 
 RUN apk --no-cache upgrade; apk add --no-cache gnupg emacs-nox \
    gd-dev graphviz perl-graphviz perl-gd \
-   mini-sendmail
+   mini-sendmail ssmtp
 
 # get some dependencies in the image and cached
 RUN cpanm HTML::Mason Moose Locale::Maketext::Fuzzy DBIx::SearchBuilder HTML::Formatter \
