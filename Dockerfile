@@ -84,6 +84,9 @@ WORKDIR /opt/rt
 # because the busybox sendmail seems to work.
 # RUN ln -sf /var/lib/mini-sendmail/mini_sendmail /usr/sbin/sendmail
 
+# ssmtp configuration
+RUN perl -i -pe 's{^mailhub=.*}{mailhub=localhost}' /etc/ssmtp/ssmtp.conf
+
 ADD run /opt/rt/
 
 EXPOSE 8000
