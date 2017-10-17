@@ -1,5 +1,5 @@
 diff --git a/lib/RT/Interface/Email.pm b/lib/RT/Interface/Email.pm
-index 1ef2ca771..593bdbe99 100644
+index 1ef2ca771..4a6f7ed23 100644
 --- a/lib/RT/Interface/Email.pm
 +++ b/lib/RT/Interface/Email.pm
 @@ -63,6 +63,8 @@ use RT::Util 'safe_run_child';
@@ -19,7 +19,7 @@ index 1ef2ca771..593bdbe99 100644
  
      # if it is a sub routine, we just return it;
      return $mail_command->($args{'Entity'}) if UNIVERSAL::isa( $mail_command, 'CODE' );
-@@ -976,6 +979,45 @@ sub SendEmail {
+@@ -976,6 +979,51 @@ sub SendEmail {
          print $fh "From $user\@localhost  ".localtime()."\n";
          print $fh $content, "\n";
          close $fh;
@@ -41,10 +41,16 @@ index 1ef2ca771..593bdbe99 100644
 +            $sender = "$prefix$from\@$domain";
 +        }
 +
++        # duplicate head as we want drop Bcc field  (??)
++        my $head = $args{'Entity'}->head->dup;
++        my @recipients = map $_->address, map Email::Address->parse($head->get($_)), qw(To Cc Bcc);
++        $head->delete('Bcc');
++
 +        eval {
 +            Email::Sender::Simple::sendmail(
 +                $args{Entity},
 +                {   from      => $sender,
++                    to        => \@recipients,
 +                    transport => Email::Sender::Transport::SMTP->new(
 +                        {   host => 'localhost',
 +                            port => 25,
