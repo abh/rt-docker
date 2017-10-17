@@ -1,5 +1,5 @@
 diff --git a/lib/RT/Interface/Email.pm b/lib/RT/Interface/Email.pm
-index 1ef2ca771..3483cee96 100644
+index 1ef2ca771..593bdbe99 100644
 --- a/lib/RT/Interface/Email.pm
 +++ b/lib/RT/Interface/Email.pm
 @@ -63,6 +63,8 @@ use RT::Util 'safe_run_child';
@@ -11,7 +11,15 @@ index 1ef2ca771..3483cee96 100644
  use 5.010;
  
  =head1 NAME
-@@ -976,6 +978,45 @@ sub SendEmail {
+@@ -892,6 +894,7 @@ sub SendEmail {
+     }
+ 
+     my $mail_command = RT->Config->Get('MailCommand');
++    $RT::Logger->info("MailCommand: ", $mail_command);
+ 
+     # if it is a sub routine, we just return it;
+     return $mail_command->($args{'Entity'}) if UNIVERSAL::isa( $mail_command, 'CODE' );
+@@ -976,6 +979,45 @@ sub SendEmail {
          print $fh "From $user\@localhost  ".localtime()."\n";
          print $fh $content, "\n";
          close $fh;
