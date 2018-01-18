@@ -1,5 +1,5 @@
 diff --git a/lib/RT/Interface/Email.pm b/lib/RT/Interface/Email.pm
-index 1ef2ca771..f6edd120b 100644
+index 1ef2ca771..09ffc7af2 100644
 --- a/lib/RT/Interface/Email.pm
 +++ b/lib/RT/Interface/Email.pm
 @@ -63,6 +63,10 @@ use RT::Util 'safe_run_child';
@@ -31,7 +31,7 @@ index 1ef2ca771..f6edd120b 100644
              require IPC::Open2;
              my ($mail, $stdout);
              my $pid = IPC::Open2::open2( $stdout, $mail, $path, @args )
-@@ -976,6 +984,51 @@ sub SendEmail {
+@@ -976,6 +984,50 @@ sub SendEmail {
          print $fh "From $user\@localhost  ".localtime()."\n";
          print $fh $content, "\n";
          close $fh;
@@ -53,10 +53,9 @@ index 1ef2ca771..f6edd120b 100644
 +            $sender = "$prefix$from\@$domain";
 +        }
 +
-+        # duplicate head as we want drop Bcc field  (??)
-+        my $head = $args{'Entity'}->head->dup;
++
 +        my @recipients = map $_->address, map Email::Address->parse($head->get($_)), qw(To Cc Bcc);
-+        $head->delete('Bcc');
++        $args{'Entity'}->head->delete('Bcc');
 +
 +        eval {
 +            Email::Sender::Simple->send(
