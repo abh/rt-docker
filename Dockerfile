@@ -1,6 +1,6 @@
-FROM quay.io/perl/base-os:v3.0.3
+FROM quay.io/perl/base-os:v3.4
 
-ENV RTVERSION 4.4.2
+ENV RTVERSION 4.4.3beta1
 
 RUN addgroup rt && adduser -D -G rt rt
 
@@ -48,12 +48,13 @@ RUN cpan < /dev/null
 RUN cpan CPAN
 
 RUN mkdir /usr/src
-RUN curl -Ls https://download.bestpractical.com/pub/rt/release/rt-$RTVERSION.tar.gz | tar -C /usr/src -xz
+#RUN curl -fLs https://download.bestpractical.com/pub/rt/release/rt-$RTVERSION.tar.gz | tar -C /usr/src -xz
+RUN curl -fLs https://download.bestpractical.com/pub/rt/devel/rt-$RTVERSION.tar.gz | tar -C /usr/src -xz
+
 
 WORKDIR /usr/src/rt-$RTVERSION
 
-ADD net-ssl.patch smtp.patch /tmp/
-RUN patch -p1 < /tmp/net-ssl.patch && rm /tmp/net-ssl.patch
+ADD smtp.patch /tmp/
 RUN patch -p1 < /tmp/smtp.patch && rm /tmp/smtp.patch
 
 RUN ./configure \
