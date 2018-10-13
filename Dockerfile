@@ -1,6 +1,6 @@
-FROM quay.io/perl/base-os:v3.4
+FROM quay.io/perl/base-os:v3.6
 
-ENV RTVERSION 4.4.3beta1
+ENV RTVERSION 4.4.3
 
 RUN addgroup rt && adduser -D -G rt rt
 
@@ -21,35 +21,32 @@ RUN cpanm HTML::Mason Moose Locale::Maketext::Fuzzy DBIx::SearchBuilder HTML::Fo
   Term::ReadKey Apache::Session CSS::Squish Date::Extract DateTime::Format::Natural \
   CSS::Minifier::XS Convert::Color Business::Hours Email::Address::List CGI::Emulate::PSGI \
   Crypt::Eksblowfish Date::Manip Scope::Upper HTML::Mason::PSGIHandler \
-  Data::Page::Pageset Tree::Simple MIME::Entity Role::Basic  && rm -fr ~/.cpanm
+  Data::Page::Pageset Tree::Simple MIME::Entity Role::Basic \
+  Email::Sender::Simple Email::Sender::Transport::SMTP \
+  MooX::late MooX::HandlesVia \
+  CPAN Locale::PO \
+  && rm -fr ~/.cpanm
 
 # modules with problems installing
-RUN cpanm HTML::FormatText::WithLinks::AndTables HTML::FormatText::WithLinks && rm -fr ~/.cpanm 
-
-RUN cpanm GraphViz GD GD::Graph GD::Text && rm -fr ~/.cpanm
+RUN cpanm HTML::FormatText::WithLinks::AndTables HTML::FormatText::WithLinks \
+  GraphViz GD GD::Graph GD::Text && rm -fr ~/.cpanm
 
 # test fails on Alpine, ignore them...
 RUN cpanm -n PerlIO::eol && rm -fr ~/.cpanm
 
-# for GnuPG::Interface
-RUN cpanm MooX::late MooX::HandlesVia && rm -fr ~/.cpanm
-# Doesn't pass tests without a tty?
+# Doesn't pass tests without a tty?  MooX::* above is for this. 
 RUN cpanm -f GnuPG::Interface && rm -fr ~/.cpanm
 
 # For RT::Extension::REST2
 RUN cpanm Path::Dispatcher MooseX::Role::Parameterized Web::Machine Module::Path Pod::POM && rm -fr ~/.cpanm
 RUN cpanm -f Test::WWW::Mechanize::PSGI && rm -fr ~/.cpanm
 
-# SMTP test
-RUN cpanm Email::Sender::Simple Email::Sender::Transport::SMTP
-
 # autoconfigure cpan shell for RT installer
 RUN cpan < /dev/null
-RUN cpan CPAN
 
 RUN mkdir /usr/src
-#RUN curl -fLs https://download.bestpractical.com/pub/rt/release/rt-$RTVERSION.tar.gz | tar -C /usr/src -xz
-RUN curl -fLs https://download.bestpractical.com/pub/rt/devel/rt-$RTVERSION.tar.gz | tar -C /usr/src -xz
+RUN curl -fLs https://download.bestpractical.com/pub/rt/release/rt-$RTVERSION.tar.gz | tar -C /usr/src -xz
+# RUN curl -fLs https://download.bestpractical.com/pub/rt/devel/rt-$RTVERSION.tar.gz | tar -C /usr/src -xz
 
 
 WORKDIR /usr/src/rt-$RTVERSION

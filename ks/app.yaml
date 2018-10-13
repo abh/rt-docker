@@ -12,4 +12,7 @@ registries:
   incubator:
     protocol: github
     uri: github.com/ksonnet/parts/tree/master/incubator
+  rt:
+    protocol: fs
+    uri: /Users/ask/src/rt-docker/ksonnet/
 version: 0.0.1
