@@ -1,6 +1,6 @@
-FROM quay.io/perl/base-os:v3.6
+FROM quay.io/perl/base-os:v3.9.1
 
-ENV RTVERSION 4.4.3
+ENV RTVERSION 4.4.4
 
 RUN addgroup rt && adduser -D -G rt rt
 
