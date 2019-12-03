@@ -1,4 +1,4 @@
-FROM quay.io/perl/base-os:v3.9.1
+FROM quay.io/perl/base-os:v3.10-1
 
 ENV RTVERSION 4.4.4
 
