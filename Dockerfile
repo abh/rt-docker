@@ -1,6 +1,6 @@
-FROM quay.io/perl/base-os:v3.11.5
+FROM harbor.ntppool.org/perlorg/base-os:3.15.0
 
-ENV RTVERSION 4.4.4
+ENV RTVERSION 4.4.5
 
 RUN addgroup rt && adduser -D -G rt rt
 
