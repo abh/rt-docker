@@ -57,6 +57,9 @@ RUN cpanm -f Test::WWW::Mechanize::PSGI && rm -fr ~/.cpanm
 # autoconfigure cpan shell for RT installer
 RUN cpan < /dev/null
 
+# external html parser for RT
+RUN apk add --no-cache w3m
+
 RUN mkdir /usr/src
 RUN curl -fLs https://download.bestpractical.com/pub/rt/release/rt-$RTVERSION.tar.gz | tar -C /usr/src -xz
 # RUN curl -fLs https://download.bestpractical.com/pub/rt/devel/rt-$RTVERSION.tar.gz | tar -C /usr/src -xz
