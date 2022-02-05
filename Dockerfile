@@ -7,9 +7,18 @@ RUN addgroup rt && adduser -D -G rt rt
 RUN apk --no-cache upgrade; \
    apk add --no-cache \
      gnupg emacs-nox \
-     gd-dev graphviz perl-graphviz perl-gd \
+     gd-dev graphviz perl-graphviz perl-gd perl-gdgraph \
      mini-sendmail ssmtp tzdata \
      perl-posix-strftime-compiler \
+     perl-cache-cache perl-html-tree perl-regexp-common \
+     perl-xml-rss perl-starlet perl-server-starter \
+     perl-parallel-prefork perl-log-dispatch \
+     perl-datetime-format-natural \
+     perl-module-util perl-class-mix \
+     perl-date-manip perl-scope-upper \
+     perl-www-mechanize perl-parallel-forkmanager \
+     perl-dbix-searchbuilder perl-html-formatter \
+     perl-html-mason perl-html-mason-psgihandler \
      perl-plack
 
 # get some dependencies in the image and cached
@@ -33,7 +42,7 @@ RUN cpanm HTML::Mason Moose Locale::Maketext::Fuzzy DBIx::SearchBuilder HTML::Fo
 
 # modules with problems installing
 RUN cpanm HTML::FormatText::WithLinks::AndTables HTML::FormatText::WithLinks \
-  GraphViz GD GD::Graph GD::Text && rm -fr ~/.cpanm
+  GraphViz GD::Text && rm -fr ~/.cpanm
 
 # test fails on Alpine, ignore them...
 RUN cpanm -n PerlIO::eol && rm -fr ~/.cpanm
