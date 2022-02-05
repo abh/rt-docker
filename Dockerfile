@@ -1,6 +1,6 @@
 FROM harbor.ntppool.org/perlorg/base-os:3.15.0-1
 
-ENV RTVERSION 4.4.5
+ENV RTVERSION 5.0.2
 
 RUN addgroup rt && adduser -D -G rt rt
 
@@ -21,7 +21,7 @@ RUN apk --no-cache upgrade; \
      perl-html-mason perl-html-mason-psgihandler \
      perl-plack
 
-# get some dependencies in the image and cached
+# Install more dependencies (cached in the image in this step; and upgraded from apk as needed)
 RUN cpanm HTML::Mason Moose Locale::Maketext::Fuzzy DBIx::SearchBuilder HTML::Formatter \
   Crypt::X509 String::ShellQuote Regexp::IPv6 Text::Password::Pronounceable \
   Regexp::Common::net::CIDR Data::ICal Symbol::Global::Name HTML::RewriteAttributes \
@@ -84,10 +84,7 @@ RUN make install
 
 ENV PERL5LIB=/opt/rt/lib
 
-RUN cpanm RT::Authen::Token RT::Extension::MergeUsers && rm -fr ~/.cpanm
-
-# tests fail if a valid database hasn't been setup
-RUN cpanm -f RT::Extension::REST2 && rm -fr ~/.cpanm
+RUN cpanm RT::Extension::MergeUsers && rm -fr ~/.cpanm
 
 WORKDIR /opt/rt
 
