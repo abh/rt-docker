@@ -4,9 +4,13 @@ ENV RTVERSION 4.4.5
 
 RUN addgroup rt && adduser -D -G rt rt
 
-RUN apk --no-cache upgrade; apk add --no-cache gnupg emacs-nox \
-   gd-dev graphviz perl-graphviz perl-gd \
-   mini-sendmail ssmtp tzdata
+RUN apk --no-cache upgrade; \
+   apk add --no-cache \
+     gnupg emacs-nox \
+     gd-dev graphviz perl-graphviz perl-gd \
+     mini-sendmail ssmtp tzdata \
+     perl-posix-strftime-compiler \
+     perl-plack
 
 # get some dependencies in the image and cached
 RUN cpanm HTML::Mason Moose Locale::Maketext::Fuzzy DBIx::SearchBuilder HTML::Formatter \
