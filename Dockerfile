@@ -28,7 +28,7 @@ RUN cpanm HTML::Mason Moose Locale::Maketext::Fuzzy DBIx::SearchBuilder HTML::Fo
   Text::WikiFormat Text::Quoted HTML::Quoted UNIVERSAL::require Module::Versions::Report \
   Time::ParseDate MIME::Types Data::GUID Text::Wrapper \
   IO::Socket::SSL JSON::XS JSON LWP::Simple XML::RSS Regexp::Common \
-  Plack Plack::Handler::Starlet Log::Dispatch Locale::Maketext Encode \
+  Plack Plack::Handler::Starman Plack::Handler::Starlet Log::Dispatch Locale::Maketext Encode \
   Digest::SHA Digest::MD5 DBI CGI CGI::PSGI Mail::Header Net::CIDR \
   JavaScript::Minifier::XS HTML::Scrubber CPAN \
   Term::ReadKey Apache::Session CSS::Squish Date::Extract DateTime::Format::Natural \

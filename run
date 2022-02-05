@@ -1,2 +1,2 @@
 #!/bin/sh
-/opt/rt/sbin/rt-server --server Starman --port 8000
+/opt/rt/sbin/rt-server --port 8000
