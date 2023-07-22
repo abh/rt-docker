@@ -1,6 +1,6 @@
-FROM harbor.ntppool.org/perlorg/base-os:3.16.0
+FROM harbor.ntppool.org/perlorg/base-os:3.17.3
 
-ENV RTVERSION 5.0.3
+ENV RTVERSION 5.0.4
 
 RUN addgroup rt && adduser -D -G rt rt
 
@@ -8,7 +8,7 @@ RUN apk --no-cache upgrade; \
    apk add --no-cache \
      gnupg emacs-nox \
      gd-dev graphviz perl-graphviz perl-gd perl-gdgraph \
-     mini-sendmail ssmtp tzdata \
+     mini-sendmail ssmtp tzdata curl \
      perl-posix-strftime-compiler \
      perl-cache-cache perl-html-tree perl-regexp-common \
      perl-xml-rss perl-starlet perl-server-starter \
