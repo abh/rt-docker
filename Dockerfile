@@ -74,7 +74,7 @@ RUN ./configure \
   --prefix=/opt/rt \
   --with-web-handler=standalone \
   --with-db-type=mysql \
-  --with-db-rt-host=mysql \
+  --with-db-rt-host=mysql5 \
   --with-web-user=rt \
   --with-web-group=rt
 
