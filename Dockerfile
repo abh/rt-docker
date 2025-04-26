@@ -1,25 +1,25 @@
-FROM harbor.ntppool.org/perlorg/base-os:3.20.2
+FROM harbor.ntppool.org/perlorg/base-os:3.21.3
 
 ENV RTVERSION 5.0.7
 
 RUN addgroup rt && adduser -D -G rt rt
 
 RUN apk --no-cache upgrade; \
-   apk add --no-cache \
-     gnupg emacs-nox \
-     gd-dev graphviz perl-graphviz perl-gd perl-gdgraph \
-     mini-sendmail ssmtp tzdata curl \
-     perl-posix-strftime-compiler \
-     perl-cache-cache perl-html-tree perl-regexp-common \
-     perl-xml-rss perl-starlet perl-server-starter \
-     perl-parallel-prefork perl-log-dispatch \
-     perl-datetime-format-natural \
-     perl-module-util perl-class-mix \
-     perl-date-manip perl-scope-upper \
-     perl-www-mechanize perl-parallel-forkmanager \
-     perl-dbix-searchbuilder perl-html-formatter \
-     perl-html-mason perl-html-mason-psgihandler \
-     perl-plack
+  apk add --no-cache \
+  gnupg emacs-nox \
+  gd-dev graphviz perl-graphviz perl-gd perl-gdgraph \
+  mini-sendmail ssmtp tzdata curl \
+  perl-posix-strftime-compiler \
+  perl-cache-cache perl-html-tree perl-regexp-common \
+  perl-xml-rss perl-starlet perl-server-starter \
+  perl-parallel-prefork perl-log-dispatch \
+  perl-datetime-format-natural \
+  perl-module-util perl-class-mix \
+  perl-date-manip perl-scope-upper \
+  perl-www-mechanize perl-parallel-forkmanager \
+  perl-dbix-searchbuilder perl-html-formatter \
+  perl-html-mason perl-html-mason-psgihandler \
+  perl-plack
 
 # Install more dependencies (cached in the image in this step; and upgraded from apk as needed)
 RUN cpanm HTML::Mason Moose Locale::Maketext::Fuzzy DBIx::SearchBuilder HTML::Formatter \
@@ -47,7 +47,7 @@ RUN cpanm HTML::FormatText::WithLinks::AndTables HTML::FormatText::WithLinks \
 # test fails on Alpine, ignore them...
 RUN cpanm -n PerlIO::eol && rm -fr ~/.cpanm
 
-# Doesn't pass tests without a tty?  MooX::* above is for this. 
+# Doesn't pass tests without a tty?  MooX::* above is for this.
 RUN cpanm -f GnuPG::Interface && rm -fr ~/.cpanm
 
 # For RT::Extension::REST2
@@ -71,12 +71,12 @@ ADD smtp.patch /tmp/
 RUN patch -p1 < /tmp/smtp.patch && rm /tmp/smtp.patch
 
 RUN ./configure \
-   --prefix=/opt/rt \
-   --with-web-handler=standalone \
-   --with-db-type=mysql \
-   --with-db-rt-host=mysql \
-   --with-web-user=rt \
-   --with-web-group=rt
+  --prefix=/opt/rt \
+  --with-web-handler=standalone \
+  --with-db-type=mysql \
+  --with-db-rt-host=mysql \
+  --with-web-user=rt \
+  --with-web-group=rt
 
 #   --enable-externalauth \
 #   --enable-gpg --enable-smime \
