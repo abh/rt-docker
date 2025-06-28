@@ -1,6 +1,6 @@
-FROM harbor.ntppool.org/perlorg/base-os:3.21.3
+FROM harbor.ntppool.org/perlorg/base-os:3.22.0
 
-ENV RTVERSION 5.0.7
+ENV RTVERSION 5.0.8
 
 RUN addgroup rt && adduser -D -G rt rt
 
