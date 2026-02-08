@@ -1,6 +1,6 @@
-FROM harbor.ntppool.org/perlorg/base-os:3.22.0
+FROM harbor.ntppool.org/perlorg/base-os:3.23.3
 
-ENV RTVERSION 5.0.8
+ENV RTVERSION 5.0.9
 
 RUN addgroup rt && adduser -D -G rt rt
 
@@ -9,6 +9,7 @@ RUN apk --no-cache upgrade; \
   gnupg emacs-nox \
   gd-dev graphviz perl-graphviz perl-gd perl-gdgraph \
   mini-sendmail ssmtp tzdata curl \
+  perl-io-socket-ssl \
   perl-posix-strftime-compiler \
   perl-cache-cache perl-html-tree perl-regexp-common \
   perl-xml-rss perl-starlet perl-server-starter \
@@ -19,6 +20,7 @@ RUN apk --no-cache upgrade; \
   perl-www-mechanize perl-parallel-forkmanager \
   perl-dbix-searchbuilder perl-html-formatter \
   perl-html-mason perl-html-mason-psgihandler \
+  perl-dbd-pg \
   perl-plack
 
 # Install more dependencies (cached in the image in this step; and upgraded from apk as needed)
@@ -29,7 +31,7 @@ RUN cpanm HTML::Mason Moose Locale::Maketext::Fuzzy DBIx::SearchBuilder HTML::Fo
   Time::ParseDate MIME::Types Data::GUID Text::Wrapper \
   IO::Socket::SSL JSON::XS JSON LWP::Simple XML::RSS Regexp::Common \
   Plack Plack::Handler::Starman Plack::Handler::Starlet Log::Dispatch Locale::Maketext Encode \
-  Digest::SHA Digest::MD5 DBI CGI CGI::PSGI Mail::Header Net::CIDR \
+  Digest::SHA Digest::MD5 DBI DBD::Pg CGI CGI::PSGI Mail::Header Net::CIDR \
   JavaScript::Minifier::XS HTML::Scrubber CPAN \
   Term::ReadKey Apache::Session CSS::Squish Date::Extract DateTime::Format::Natural \
   CSS::Minifier::XS Convert::Color Business::Hours Email::Address::List CGI::Emulate::PSGI \
