@@ -31,7 +31,7 @@ RUN cpanm HTML::Mason Moose Locale::Maketext::Fuzzy DBIx::SearchBuilder HTML::Fo
   Time::ParseDate MIME::Types Data::GUID Text::Wrapper \
   IO::Socket::SSL JSON::XS JSON LWP::Simple XML::RSS Regexp::Common \
   Plack Plack::Handler::Starman Plack::Handler::Starlet Log::Dispatch Locale::Maketext Encode \
-  Digest::SHA Digest::MD5 DBI DBD::Pg CGI CGI::PSGI Mail::Header Net::CIDR \
+  Digest::SHA Digest::MD5 DBI DBD::Pg DBD::mysql CGI CGI::PSGI Mail::Header Net::CIDR \
   JavaScript::Minifier::XS HTML::Scrubber CPAN \
   Term::ReadKey Apache::Session CSS::Squish Date::Extract DateTime::Format::Natural \
   CSS::Minifier::XS Convert::Color Business::Hours Email::Address::List CGI::Emulate::PSGI \
