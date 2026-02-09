@@ -1,6 +1,6 @@
 FROM harbor.ntppool.org/perlorg/base-os:3.23.3
 
-ENV RTVERSION 5.0.9
+ENV RTVERSION 6.0.2
 
 RUN addgroup rt && adduser -D -G rt rt
 
@@ -76,7 +76,6 @@ RUN ./configure \
   --prefix=/opt/rt \
   --with-web-handler=standalone \
   --with-db-type=mysql \
-  --with-db-rt-host=mysql5 \
   --with-web-user=rt \
   --with-web-group=rt
 

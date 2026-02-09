@@ -1,8 +1,8 @@
-diff --git a/lib/RT/Interface/Email.pm b/lib/RT/Interface/Email.pm
-index 1ef2ca771..09ffc7af2 100644
---- a/lib/RT/Interface/Email.pm
-+++ b/lib/RT/Interface/Email.pm
-@@ -63,6 +63,10 @@ use RT::Util 'safe_run_child';
+diff --git i/lib/RT/Interface/Email.pm w/lib/RT/Interface/Email.pm
+index 7c0b3b04ec..f735c4b948 100644
+--- i/lib/RT/Interface/Email.pm
++++ w/lib/RT/Interface/Email.pm
+@@ -63,6 +63,11 @@ use RT::Util 'safe_run_child';
  use File::Spec;
  use MIME::Words ();
  use Scope::Upper qw/unwind HERE/;
@@ -10,10 +10,11 @@ index 1ef2ca771..09ffc7af2 100644
 +use Email::Sender ();
 +use Email::Sender::Simple ();
 +use Email::Sender::Transport::SMTP ();
- use 5.010;
++
+ use 5.26.3;
  
  =head1 NAME
-@@ -892,6 +896,8 @@ sub SendEmail {
+@@ -907,6 +912,8 @@ sub SendEmail {
      }
  
      my $mail_command = RT->Config->Get('MailCommand');
@@ -22,7 +23,7 @@ index 1ef2ca771..09ffc7af2 100644
  
      # if it is a sub routine, we just return it;
      return $mail_command->($args{'Entity'}) if UNIVERSAL::isa( $mail_command, 'CODE' );
-@@ -929,6 +935,8 @@ sub SendEmail {
+@@ -947,6 +954,8 @@ sub SendEmail {
              # if something wrong with $mail->print we will get PIPE signal, handle it
              local $SIG{'PIPE'} = sub { die "program unexpectedly closed pipe" };
  
@@ -31,7 +32,7 @@ index 1ef2ca771..09ffc7af2 100644
              require IPC::Open2;
              my ($mail, $stdout);
              my $pid = IPC::Open2::open2( $stdout, $mail, $path, @args )
-@@ -976,6 +984,50 @@ sub SendEmail {
+@@ -994,6 +1003,50 @@ sub SendEmail {
          print $fh "From $user\@localhost  ".localtime()."\n";
          print $fh $content, "\n";
          close $fh;
