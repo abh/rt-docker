@@ -23,9 +23,6 @@ RUN apk --no-cache upgrade; \
   perl-dbd-pg \
   perl-plack
 
-# XXX temporary: find out why the Time::ParseDate tests fail
-RUN cpanm Time::ParseDate || (cat ~/.cpanm/work/*/build.log; false)
-
 # Install more dependencies (cached in the image in this step; and upgraded from apk as needed)
 RUN cpanm HTML::Mason Moose Locale::Maketext::Fuzzy DBIx::SearchBuilder HTML::Formatter \
   Crypt::X509 String::ShellQuote Regexp::IPv6 Text::Password::Pronounceable \
@@ -51,6 +48,12 @@ RUN cpanm HTML::FormatText::WithLinks::AndTables HTML::FormatText::WithLinks \
 
 # test fails on Alpine, ignore them...
 RUN cpanm -n PerlIO::eol && rm -fr ~/.cpanm
+
+# t/rt96453.t pins TZ=MST7MDT and comes out an hour off around the epoch;
+# musl picks different DST defaults than glibc for a bare POSIX TZ string.
+# The suite's other TZ tests skip themselves on musl, that one doesn't.
+# RT uses named zones from tzdata, so this doesn't affect us.
+RUN cpanm -n Time::ParseDate && rm -fr ~/.cpanm
 
 # Doesn't pass tests without a tty?  MooX::* above is for this.
 RUN cpanm -f GnuPG::Interface && rm -fr ~/.cpanm
