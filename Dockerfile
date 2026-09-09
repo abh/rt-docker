@@ -23,15 +23,18 @@ RUN apk --no-cache upgrade; \
   perl-dbd-pg \
   perl-plack
 
+# XXX temporary: find out why the Time::ParseDate tests fail
+RUN cpanm Time::ParseDate || (cat ~/.cpanm/work/*/build.log; false)
+
 # Install more dependencies (cached in the image in this step; and upgraded from apk as needed)
 RUN cpanm HTML::Mason Moose Locale::Maketext::Fuzzy DBIx::SearchBuilder HTML::Formatter \
   Crypt::X509 String::ShellQuote Regexp::IPv6 Text::Password::Pronounceable \
   Regexp::Common::net::CIDR Data::ICal Symbol::Global::Name HTML::RewriteAttributes \
   Text::WikiFormat Text::Quoted HTML::Quoted UNIVERSAL::require Module::Versions::Report \
-  Time::ParseDate MIME::Types Data::GUID Text::Wrapper \
+  MIME::Types Data::GUID Text::Wrapper \
   IO::Socket::SSL JSON::XS JSON LWP::Simple XML::RSS Regexp::Common \
   Plack Plack::Handler::Starman Plack::Handler::Starlet Log::Dispatch Locale::Maketext Encode \
-  Digest::SHA Digest::MD5 DBI DBD::Pg DBD::mysql CGI CGI::PSGI Mail::Header Net::CIDR \
+  Digest::SHA Digest::MD5 DBI CGI CGI::PSGI Mail::Header Net::CIDR \
   JavaScript::Minifier::XS HTML::Scrubber CPAN \
   Term::ReadKey Apache::Session CSS::Squish Date::Extract DateTime::Format::Natural \
   CSS::Minifier::XS Convert::Color Business::Hours Email::Address::List CGI::Emulate::PSGI \
