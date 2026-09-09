@@ -11,6 +11,9 @@ Changes to the RT container image. Earlier history is in the git log.
 - `DBD::Pg` now comes from the Alpine `perl-dbd-pg` package rather than CPAN.
   Building it from CPAN needs postgresql development headers that the base
   image doesn't carry.
+- `IO::Socket::SSL` now comes from the Alpine `perl-io-socket-ssl` package
+  rather than CPAN. Its test suite fails intermittently — the same 2.099
+  release passed one build and failed the next.
 - `Time::ParseDate` is installed without running its tests. One test pins
   `TZ=MST7MDT` and lands an hour off around the epoch, because musl and glibc
   pick different DST defaults for a bare POSIX timezone string. RT uses named
