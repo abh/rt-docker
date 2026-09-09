@@ -1,0 +1,26 @@
+when:
+  - event: [push, pull_request, manual, tag]
+
+steps:
+  - name: generate-tags
+    image: ghcr.io/abh/woodpecker-docker-tags-plugin:0.2.1-abh
+    settings:
+      tags: |
+        branch
+        sha
+        edge -v latest
+        semver --auto
+
+  - name: docker
+    image: woodpeckerci/plugin-kaniko
+    when:
+      - event: [push, tag, manual]
+    settings:
+      dockerfile: Dockerfile
+      registry: harbor.ntppool.org
+      repo: perlorg/rt
+      cache: true
+      username:
+        from_secret: harbor_perlorg_username
+      password:
+        from_secret: harbor_perlorg_password
